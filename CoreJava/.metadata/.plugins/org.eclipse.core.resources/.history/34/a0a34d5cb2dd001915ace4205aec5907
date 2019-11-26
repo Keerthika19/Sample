@@ -1,0 +1,92 @@
+import com.hcl.bean.Employee;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+public class Jdbc {
+	int id;
+	String name;
+	Connection c=null;
+	Statement sm=null;
+	PreparedStatement st=null;
+	ResultSet rs=null;
+	
+	int insert(Employee s) throws SQLException{
+		int i=0;
+		try{
+			id=s.getId();
+		name=s.getName();
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("insert into Student values(?,?)");
+		st.setInt(1,id);
+		st.setString(2,name);
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return i;
+		/*st.close();
+		c.close();*/
+		//st.executeUpdate("insert into student values(s.getId(),s.getName())");
+		
+	}
+	
+	int update(Employee s) throws SQLException{
+		int i=0;
+		try{
+		id=s.getId();
+	
+		name=s.getName();
+		System.out.println("id "+id+" "+name);
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("update Student set name=? where id=?");
+		st.setInt(2,id);
+		st.setString(1,name);
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		//st.executeUpdate("update student set name=s.getName() where id=s.getId())");
+		return i;
+	}
+	
+	void display() throws SQLException{
+		c=MySqlConn.getCon();
+		sm=c.createStatement();
+		rs=sm.executeQuery("Select * from student");
+		System.out.println();
+		while(rs.next()){
+			System.out.println(rs.getInt(1)+ " "+rs.getString(2));  
+		}
+	}
+	int delete(Employee s){
+		int i=0;
+		try{
+		id=s.getId();
+	
+		name=s.getName();
+		System.out.println("id "+id+" "+name);
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("delete from Student where id=?");
+		st.setInt(1,id);
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return i;
+		
+	}
+	void closes() throws SQLException{
+		st.close();
+		c.close();
+	}
+
+}

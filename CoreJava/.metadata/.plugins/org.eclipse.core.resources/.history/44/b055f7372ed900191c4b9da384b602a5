@@ -1,0 +1,13 @@
+#Root Logger option
+#log4j.rootLogger=ALL, stdout
+
+#Redirect log messages to console
+#log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+#log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+#log4j.appender.stdout.layout.ConversionPattern==[%5p] %d{mm:ss} (%F:%M:%L)%n%n%n
+
+log4j.rootLogger=ALL, abc
+log4j.appender.abc=org.apache.log4j.FileAppender
+log4j.appender.abc.file=c:/abc.txt
+log4j.appender.abc.layout=org.apache.log4j.SimpleLayout
+log4j.appender.abc.Append=false

@@ -1,0 +1,110 @@
+package com.jdbc;
+import com.hcl.bean.Employee;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+
+public class Jdbc {
+	int id;
+	String name;
+	int salary;
+	String des;
+	String ins;
+	Connection c=null;
+	Statement sm=null;
+	PreparedStatement st=null;
+	ResultSet rs=null;
+	
+	public int insert(Employee s) throws SQLException{
+		int i=0;
+		try{
+			id=s.getId();
+		name=s.getName();
+		salary=s.getSalary();
+		des=s.getDesignation();
+		ins=s.getInsScheme();
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("insert into emp1 values(?,?,?,?,?)");
+		st.setInt(1,id);
+		st.setString(2,name);
+		st.setInt(3,salary);
+		st.setString(4,des);
+		st.setString(5,ins);
+		
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		return i;
+		/*st.close();
+		c.close();*/
+		//st.executeUpdate("insert into student values(s.getId(),s.getName())");
+		
+	}
+	
+	public int update(Employee s) throws SQLException{
+		int i=0;
+		try{
+		id=s.getId();
+	
+		name=s.getName();
+		salary=s.getSalary();
+		des=s.getDesignation();
+		ins=s.getInsScheme();
+		System.out.println("id "+id+" "+name);
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("update emp1 set designation=? where id=?");
+		st.setInt(2,id);
+		st.setString(1,des);
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		
+		//st.executeUpdate("update student set name=s.getName() where id=s.getId())");
+		return i;
+	}
+	
+	public void display() throws SQLException{
+		c=MySqlConn.getCon();
+		sm=c.createStatement();
+		rs=sm.executeQuery("Select * from emp1");
+		System.out.println();
+		while(rs.next()){
+			System.out.println(rs.getInt(1)+ " "+rs.getString(2)+ " "+
+		rs.getInt(3)+ " "+rs.getString(4)+ " "+rs.getString(5));  
+		}
+	}
+	public int delete(Employee s){
+		int i=0;
+		try{
+		id=s.getId();
+	
+		name=s.getName();
+		salary=s.getSalary();
+		des=s.getDesignation();
+		ins=s.getInsScheme();
+		System.out.println("id "+id+" "+name);
+		c=MySqlConn.getCon();
+		st=c.prepareStatement("delete from emp1 where id=?");
+		st.setInt(1,id);
+		i=st.executeUpdate();
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return i;
+		
+	}
+	public void closes() throws SQLException{
+		st.close();
+		c.close();
+	}
+
+}

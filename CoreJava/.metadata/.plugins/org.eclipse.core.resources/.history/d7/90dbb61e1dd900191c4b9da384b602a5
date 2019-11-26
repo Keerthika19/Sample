@@ -1,0 +1,149 @@
+package com.hcl.pl;
+
+//import java.util.Scanner;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Scanner;
+
+import com.hcl.bean.Employee;
+import com.hcl.service.EmployeeService;
+import com.hcl.service.EmployeeServiceImp;
+class NameNullException extends Exception{
+	
+	
+	
+	public String toString(){
+		return "Name is null Exception";
+	}
+}
+public class Main{
+	String name;
+	HashMap<Integer, Employee> hm = new HashMap<Integer, Employee>();
+	public void accept(Employee e){
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		do {
+			System.out.println("Enter name:");
+			try {
+				name = in.nextLine();
+				e.setName(name);
+				if (name.length() == 0) {
+					throw new NameNullException();
+				}
+			}
+
+			catch (NameNullException ee) {
+				System.out.println(ee);
+			}
+		}while(name.length()==0);
+		System.out.println("Enter id:");
+		e.setId(in.nextInt());
+		System.out.println("Enter salary:");
+		e.setSalary(in.nextInt());
+		System.out.println("Enter designation:");
+		e.setDesignation(in.next());
+	}
+	
+	void saveObj(Employee e) throws IOException{
+		FileOutputStream f= new FileOutputStream("Objects.txt");
+		ObjectOutputStream o= new ObjectOutputStream(f);
+		try{
+			o.writeObject(e);
+		}
+		catch(Exception ee){
+			System.err.println(e);
+		}
+		finally{
+			f.close();
+			o.close();
+		}
+		
+	}
+	
+	void dispObj (Employee e) throws IOException{
+		 FileInputStream f = new FileInputStream("Objects.txt"); 
+         ObjectInputStream o = new ObjectInputStream(f);
+         try{
+        	 System.out.println((Employee)o.readObject());
+         }
+         catch(Exception ee){
+        	 System.err.println(e);
+         }
+         finally{
+        	 f.close();
+        	 o.close();
+         }
+	}
+	
+	/*public void search(HashMap<Integer, Employee> hm) {
+		// TODO Auto-generated method stub
+		Employee e;
+		Iterator<Map.Entry<Integer,Employee>> itr1= hm.entrySet().iterator();
+		while(itr1.hasNext()){
+			e=(Employee) itr1.next();
+			if(e.getId()==1)
+			System.out.println(e);
+		}
+		
+	}
+*/		
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+
+		Main m = new Main();
+		int i = 0;
+		Scanner in = new Scanner(System.in);
+		char choice;
+		
+		do {
+			Employee emp = new Employee();
+			m.accept(emp);
+			EmployeeService e1 = new EmployeeServiceImp();
+			emp = e1.setScheme(emp);
+			System.out.println(emp);
+			m.saveObj(emp);
+			m.dispObj(emp);
+			i++;
+
+			m.hm.put(emp.getId(), emp);      
+			// System.out.println(hm.containsKey(1));
+			System.out.println("Do you want to continue?");
+			choice = in.next().charAt(0);
+		} while (choice == 'y');
+		choice = 'n';
+		System.out.println("Do you want to search?");
+		choice = in.next().charAt(0);
+		/*Employee e = new Employee();*/
+		if ((choice == 'y')) {
+			System.out.println("Enter the ID to search:");
+			i=in.nextInt();
+			m.search(i);
+		}
+	}
+
+	private void search(int i) {
+		// TODO Auto-generated method stub
+		Integer in=Integer.valueOf(i);
+		if(hm.containsKey(in)){
+			System.out.println("ID Found");
+		Employee e = null;
+		Iterator<Integer> itr1= hm.keySet().iterator();
+		while(itr1.hasNext()){
+			Integer ii= itr1.next();
+			if(ii.equals(e.getId())){
+				System.out.println(e);
+				break;
+			}
+			
+		}
+	}
+	}
+
+}

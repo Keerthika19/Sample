@@ -1,0 +1,53 @@
+import java.util.Comparator;
+
+class Employee{
+			private int age;
+			private String name;
+			public int getAge() {
+				return age;
+			}
+			public void setAge(int age) {
+				this.age = age;
+			}
+			public String getName() {
+				return name;
+			}
+			public void setName(String name) {
+				this.name = name;
+			}
+}
+class AgeComp implements Comparator <Employee>{
+	public int compare(Employee emp1, Employee emp2) {
+		int empAge1 = emp1.getAge();
+		int empAge2 = emp2.getAge();
+
+		if (empAge1 > empAge2) 
+			return 1;
+		else if(empAge1 < empAge2)
+			return -1;
+		else 
+			return 0;
+	}
+}
+
+class NameComparator implements Comparator{
+	public int compare(Object emp1, Object emp2){
+		String emp1Name=((Employee)emp1).getName();
+		String emp2Name=((Employee)emp2).getName();
+		
+		return emp1Name.compareTo(emp2Name);
+	}
+}
+
+public class ComparatorExample {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+			
+		
+
+		
+
+	}
+
+}

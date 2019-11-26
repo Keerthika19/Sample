@@ -1,0 +1,244 @@
+package com.hcl.pl;
+
+//import java.util.Scanner;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+import com.hcl.bean.Employee;
+import com.jdbc.Jdbc;
+class NameNullException extends Exception{
+	
+	
+	
+	public String toString(){
+		return "Name is null Exception";
+	}
+}
+public class Main{
+	/*String name;
+	HashMap<Integer, Employee> hm = new HashMap<Integer, Employee>();
+	public void accept(Employee e){
+		@SuppressWarnings("resource")
+		Scanner in = new Scanner(System.in);
+		do {
+			System.out.println("Enter name:");
+			try {
+				name = in.nextLine();
+				e.setName(name);
+				if (name.length() == 0) {
+					throw new NameNullException();
+				}
+			}
+
+			catch (NameNullException ee) {
+				System.out.println(ee);
+			}
+		}while(name.length()==0);
+		System.out.println("Enter id:");
+		e.setId(in.nextInt());
+		System.out.println("Enter salary:");
+		e.setSalary(in.nextInt());
+		System.out.println("Enter designation:");
+		e.setDesignation(in.next());
+	}
+	
+	void saveObj(Employee e) throws IOException{
+		FileOutputStream f= new FileOutputStream("Objects.txt");
+		ObjectOutputStream o= new ObjectOutputStream(f);
+		try{
+			o.writeObject(e);
+		}
+		catch(Exception ee){
+			System.err.println(e);
+		}
+		finally{
+			f.close();
+			o.close();
+		}
+		
+	}
+	
+	void dispObj (Employee e) throws IOException{
+		 FileInputStream f = new FileInputStream("Objects.txt"); 
+         ObjectInputStream o = new ObjectInputStream(f);
+         try{
+        	 System.out.println((Employee)o.readObject());
+         }
+         catch(Exception ee){
+        	 System.err.println(e);
+         }
+         finally{
+        	 f.close();
+        	 o.close();
+         }
+	}
+	
+	public void search(HashMap<Integer, Employee> hm) {
+		// TODO Auto-generated method stub
+		Employee e;
+		Iterator<Map.Entry<Integer,Employee>> itr1= hm.entrySet().iterator();
+		while(itr1.hasNext()){
+			e=(Employee) itr1.next();
+			if(e.getId()==1)
+			System.out.println(e);
+		}
+		
+	}
+		
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+
+		Main m = new Main();
+		int i = 0;
+		Scanner in = new Scanner(System.in);
+		char choice;
+		
+		do {
+			Employee emp = new Employee();
+			m.accept(emp);
+			EmployeeService e1 = new EmployeeServiceImp();
+			emp = e1.setScheme(emp);
+			System.out.println(emp);
+			m.saveObj(emp);
+			m.dispObj(emp);
+			i++;
+
+			m.hm.put(emp.getId(), emp);      
+			// System.out.println(hm.containsKey(1));
+			System.out.println("Do you want to continue?");
+			choice = in.next().charAt(0);
+		} while (choice == 'y');
+		choice = 'n';
+		System.out.println("Do you want to search?");
+		choice = in.next().charAt(0);
+		Employee e = new Employee();
+		if ((choice == 'y')) {
+			System.out.println("Enter the ID to search:");
+			i=in.nextInt();
+			m.search(i);
+		}
+	}
+
+	private void search(int i) {
+		// TODO Auto-generated method stub
+		Integer in=Integer.valueOf(i);
+		if(hm.containsKey(in)){
+			System.out.println("ID Found");
+		}
+		Employee e = new Employee();
+		Iterator<Integer> itr1= hm.keySet().iterator();
+		while(itr1.hasNext()){
+			Integer ii= itr1.next();
+			if(ii.equals(i)){
+				System.out.println(e);
+				break;
+			}
+			
+		}
+	}
+*/
+	static int choice;
+	static int id;
+	static String name;
+	static char ch;
+	static int i;
+	static int salary;
+	static String des;
+	static String ins; 
+
+	public static void main(String[] args) throws SQLException {
+		// TODO Auto-generated method stub
+		Jdbc op=new Jdbc();
+		Employee stu = new Employee();
+		Scanner s=new Scanner(System.in);
+		do{
+		System.out.println("------------OPTIONS------------");
+		System.out.println("1.To insert a new value into the existing table");
+		System.out.println("2.To update an existing value");
+		System.out.println("3.To display table");
+		System.out.println("4.To delete a row");
+		choice=s.nextInt();
+		
+		switch(choice){
+		case 1:
+			System.out.println("Enter the name:");
+		String	name=s.next();
+			stu.setName(name);
+			System.out.println("Enter the id:");
+			id=s.nextInt();
+			stu.setId(id);
+			System.out.println("Enter the salary:");
+			salary=s.nextInt();
+			stu.setSalary(salary);
+			i=op.insert(stu);
+			if(i==1){
+				System.out.println("----------INSERTED-----------");
+				i=0;
+			}
+			else{
+				System.out.println("----------NOT INSERTED-----------");
+			}
+			break;
+		case 2:
+			//System.out.println("Do you wish to ");
+			/*System.out.println("1.Update id");
+			System.out.println("1.Update name");
+			choice=s.nextInt();
+			switch(choice){
+			case 1:
+				System.out.println("Enter the name:");
+				name=s.nextLine();
+				stu.setName(name);
+				System.out.println("Enter the id:");
+				id=s.nextInt();
+				stu.setId(id);
+				op.update(stu);
+				System.out.println("----------UPDATED-----------");
+			case 2:*/
+				System.out.println("Enter the id:");
+				id=s.nextInt();
+				stu.setId(id);
+				System.out.println("Enter the designation:");
+				des=s.next();
+				stu.setDesignation(des);
+				i=op.update(stu);
+				if(i==1){
+					System.out.println("----------UPDATED-----------");
+					i=0;
+				}
+				else{
+					System.out.println("----------NOT UPDATED-----------");
+				}
+			/*default :
+				System.out.println("Select a valid option");
+			
+			}*/
+				break;
+		case 3:
+			op.display();
+			break;
+		case 4:
+			System.out.println("Enter the id:");
+			id=s.nextInt();
+			stu.setId(id);
+			i=op.delete(stu);
+			if(i==1){
+				System.out.println("----------DELETED-----------");
+				i=0;
+			}
+			else{
+				System.out.println("----------NOT DELETED-----------");
+			}
+			break;
+		default :
+			System.out.println("Select a valid option");
+		
+		}
+		System.out.println("Press y to continue");
+		ch=s.next().charAt(0);
+		}while(ch=='y');
+		op.closes();
+
+	}
+
+}
